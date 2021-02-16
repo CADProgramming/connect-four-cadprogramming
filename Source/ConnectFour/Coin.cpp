@@ -13,9 +13,9 @@ ACoin::ACoin()
 		ConstructorHelpers::FObjectFinderOptional<UMaterial> BaseMaterial;
 		ConstructorHelpers::FObjectFinderOptional<UMaterial> GlowMaterial;
 		FConstructorStatics()
-			: CoinMesh(TEXT("/Game/Geometry/Meshes/Grid/connect_four_coin"))
-			, BaseMaterial(TEXT("/Game/Geometry/Meshes/Grid/CoinMaterial"))
-			, GlowMaterial(TEXT("/Game/Geometry/Meshes/Grid/GlowMaterial"))
+			: CoinMesh(TEXT("/Game/Geometry/Meshes/Coin/Coin"))
+			, BaseMaterial(TEXT("/Game/Geometry/Meshes/Coin/CoinMaterial"))
+			, GlowMaterial(TEXT("/Game/Geometry/Meshes/Coin/GlowMaterial"))
 		{
 		}
 	};

@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Engine/StaticMeshActor.h"
+#include "Kismet/GameplayStatics.h"
 #include "EngineUtils.h"
 #include "Coin.generated.h"
 
@@ -34,10 +35,6 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Appearance")
 	class UMaterial* GlowMaterial;
 
-	// Platform the coin cannot pass through
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Collision Overlap Objects")
-	class AStaticMeshActor* Platform;
-
 	ACoin();
 
 	// Left mouse button down on coin, move coin to mouse cursor
@@ -48,4 +45,5 @@ public:
 
 	// Coin glow on mouse hover
 	void Highlight(const bool bOn);
+
 };
