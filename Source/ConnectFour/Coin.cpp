@@ -21,37 +21,40 @@ ACoin::ACoin()
 	};
 	static FConstructorStatics ConstructorStatics;
 
-	// Create static mesh component
+	// Create and setup static mesh component
 	BlockMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BlockMesh0"));
 	BlockMesh->SetStaticMesh(ConstructorStatics.CoinMesh.Get());
 	BlockMesh->SetMaterial(0, ConstructorStatics.BaseMaterial.Get());
 	RootComponent = BlockMesh;
+
+	//Enable physics
 	BlockMesh->SetSimulatePhysics(true);
 
+	//Setup material defaults
 	BaseMaterial = ConstructorStatics.BaseMaterial.Get();
 	GlowMaterial = ConstructorStatics.GlowMaterial.Get();
 }
 
-void ACoin::CoinClicked(UPrimitiveComponent* ClickedComp, FKey ButtonClicked)
+// Left mouse button down on coin, move coin to mouse cursor
+void ACoin::HandleClicked(const FVector MousePosition)
 {
-	HandleClicked();
-}
-
-
-void ACoin::HandleClicked()
-{
+	// Move coin to mouse coordinates, enable collisions on move
 	BlockMesh->SetSimulatePhysics(false);
 	SetActorLocation(MousePosition, false, nullptr, ETeleportType::None);
 	SetActorRotation(FQuat(0, 0, 0.707f, 0.707f), ETeleportType::ResetPhysics);
 }
 
+// Left mouse button released, activate normal physics
 void ACoin::HandleReleased()
 {
+	// Restore normal physics
 	BlockMesh->SetSimulatePhysics(true);
 }
 
-void ACoin::Highlight(bool bOn)
+// Coin glow on mouse hover
+void ACoin::Highlight(const bool bOn)
 {
+	// If glow enabled, use glow material
 	if (bOn)
 	{
 		BlockMesh->SetMaterial(0, GlowMaterial);

@@ -12,38 +12,40 @@ UCLASS()
 class CONNECTFOUR_API ACoin : public AActor
 {
 	GENERATED_BODY()
-
-	/** StaticMesh component for the clickable block */
-	UPROPERTY(Category = Block, VisibleDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-	class UStaticMeshComponent* BlockMesh;
 	
-public:	
-	// Sets default values for this actor's properties
-	ACoin();
+public:
+	// Distance from this coin to the grid
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Position")
+	float DistanceToGrid;
 
-	/** Are we currently active? */
-	bool isActive;
+	// X position where the coin was picked up
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Position")
+	float InitialXPosition;
 
-	UPROPERTY(VisibleAnywhere)
-	FVector MousePosition;
+	// Default coin mesh
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Appearance")
+	class UStaticMeshComponent* BlockMesh;
 
-	/** Pointer to white material used on the focused block */
-	UPROPERTY()
+	// Default base material
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Appearance")
 	class UMaterial* BaseMaterial;
 
-	/** Pointer to blue material used on inactive blocks */
-	UPROPERTY()
+	// Default glow material
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Appearance")
 	class UMaterial* GlowMaterial;
 
-	UPROPERTY(VisibleAnywhere)
-	AStaticMeshActor* Platform;
+	// Platform the coin cannot pass through
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Collision Overlap Objects")
+	class AStaticMeshActor* Platform;
 
-	UFUNCTION()
-	void CoinClicked(UPrimitiveComponent* ClickedComp, FKey ButtonClicked);
+	ACoin();
 
-	void HandleClicked();
+	// Left mouse button down on coin, move coin to mouse cursor
+	void HandleClicked(const FVector MousePosition);
+
+	// Left mouse button released, activate normal physics
 	void HandleReleased();
 
-	void Highlight(bool bOn);
-	void UpdateMousePosition(FVector CurrentMousePosition) { MousePosition = CurrentMousePosition; }
+	// Coin glow on mouse hover
+	void Highlight(const bool bOn);
 };

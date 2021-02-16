@@ -11,9 +11,11 @@
 AConnectFourPawn::AConnectFourPawn(const FObjectInitializer& ObjectInitializer) 
 	: Super(ObjectInitializer)
 {
+	// Player controller should use this pawn
 	AutoPossessPlayer = EAutoReceiveInput::Player0;
 }
 
+// Tick event for Pawn
 void AConnectFourPawn::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
@@ -25,33 +27,11 @@ void AConnectFourPawn::Tick(float DeltaSeconds)
 		End = Start + (Dir * 8000.0f);
 		TraceForBlock(Start, End, false);
 
-		if (CurrentCoinFocus)
-		{
-			if (MousePosition.Z >= 200.0f)
-			{
-				if (MousePosition.Z <= 350.0f)
-				{
-					MousePosition.X = currentXPosition + (distanceFromGrid * ((MousePosition.Z - 200.0f) / 150.0f));
-				}
-				else
-				{
-					MousePosition.X = 940.0f;
-				}
-			}
-			else
-			{
-				MousePosition.X = CurrentCoinFocus->GetTargetLocation().X;
-				currentXPosition = MousePosition.X;
-				distanceFromGrid = 940.0f - currentXPosition;
-			}
-			MousePosition.Y = (((End.Y - Start.Y) / (End.X - Start.X)) * (MousePosition.X - Start.X)) + Start.Y;
-			MousePosition.Z = (((End.Z - Start.Z) / (End.X - Start.X)) * (MousePosition.X - Start.X)) + Start.Z;
-			CurrentCoinFocus->UpdateMousePosition(MousePosition);
-		}
+		CalculateMousePosition(Start, End);
 	}
 }
 
-// Called to bind functionality to input
+// Binds Mouse axis to Grab Coin method
 void AConnectFourPawn::SetupPlayerInputComponent(class UInputComponent* InInputComponent)
 {
 	Super::SetupPlayerInputComponent(InInputComponent);
@@ -59,39 +39,78 @@ void AConnectFourPawn::SetupPlayerInputComponent(class UInputComponent* InInputC
 	InInputComponent->BindAxis("GrabCoin", this, &AConnectFourPawn::GrabCoin);
 }
 
-void AConnectFourPawn::GrabCoin(float AxisValue)
+// Calculates a mouse position that conforms to the coin's x coordinate
+void AConnectFourPawn::CalculateMousePosition(const FVector TraceStart, const FVector TraceEnd)
 {
-	if (CurrentCoinFocus && AxisValue == 1.0f)
+	// Make sure there is a coin in focus
+	if (CurrentCoinFocus)
 	{
-		CurrentCoinFocus->HandleClicked();
-	}
-	else if (CurrentCoinFocus && AxisValue == 0)
-	{
-		CurrentCoinFocus->HandleReleased();
+		float& InitialXPositionPtr = CurrentCoinFocus->InitialXPosition;
+		float& DistanceToGridPtr = CurrentCoinFocus->DistanceToGrid;
+
+		// If mouse is above minimum move height
+		if (MousePosition.Z >= MINMOVEHEIGHT)
+		{
+			// If mouse isn't already at the top of the grid
+			if (MousePosition.Z <= MAXMOVEHEIGHT)
+			{
+				// Calculate the x position based on the height of the coin, higher coin == closer to grid
+				MousePosition.X = InitialXPositionPtr + (DistanceToGridPtr * ((MousePosition.Z - MINMOVEHEIGHT) / MOVEHEIGHTDIFF));
+			}
+			else
+			{
+				// Coin can drop into grid
+				MousePosition.X = GRIDXPOSITION;
+			}
+		}
+		else
+		{
+			// Don't move coin toward grid
+			MousePosition.X = CurrentCoinFocus->GetTargetLocation().X;
+			InitialXPositionPtr = MousePosition.X;
+			DistanceToGridPtr = GRIDXPOSITION - InitialXPositionPtr;
+		}
+
+		// Calculate mouse Y and Z coordinates based on perspective using a fixed X position
+		MousePosition.Y = (((TraceEnd.Y - TraceStart.Y) / (TraceEnd.X - TraceStart.X))
+			* (MousePosition.X - TraceStart.X)) + TraceStart.Y;
+		MousePosition.Z = (((TraceEnd.Z - TraceStart.Z) / (TraceEnd.X - TraceStart.X)) 
+			* (MousePosition.X - TraceStart.X)) + TraceStart.Z;
 	}
 }
 
+// Makes a trace from the camera to the nearest coin using the mouse for direction
 void AConnectFourPawn::TraceForBlock(const FVector& Start, const FVector& End, bool bDrawDebugHelpers)
 {
+	// Left mouse button is not down
 	if (GetInputAxisValue("GrabCoin") != 1.0f)
 	{
+		// Start a trace for a coin
 		FHitResult HitResult;
 		GetWorld()->LineTraceSingleByChannel(HitResult, Start, End, ECC_Visibility);
+		
+		// Debug
 		if (bDrawDebugHelpers)
 		{
 			DrawDebugLine(GetWorld(), Start, HitResult.Location, FColor::Red);
 			DrawDebugSolidBox(GetWorld(), HitResult.Location, FVector(20.0f), FColor::Red);
 		}
+
+		// If coin is found
 		if (HitResult.Actor.IsValid())
 		{
+			// Cast to coin
 			ACoin* HitBlock = Cast<ACoin>(HitResult.Actor.Get());
 
+			// If coin is not the same as previous
 			if (CurrentCoinFocus != HitBlock)
 			{
+				// Unhighlight previous coin
 				if (CurrentCoinFocus)
 				{
 					CurrentCoinFocus->Highlight(false);
 				}
+				// Highlight current coin
 				if (HitBlock)
 				{
 					HitBlock->Highlight(true);
@@ -104,5 +123,20 @@ void AConnectFourPawn::TraceForBlock(const FVector& Start, const FVector& End, b
 			CurrentCoinFocus->Highlight(false);
 			CurrentCoinFocus = nullptr;
 		}
+	}
+}
+
+// Initiates a mouse drag using the coin under the mouse
+void AConnectFourPawn::GrabCoin(float AxisValue)
+{
+	// Left mouse button clicked
+	if (CurrentCoinFocus && AxisValue == 1.0f)
+	{
+		// Handle click event
+		CurrentCoinFocus->HandleClicked(MousePosition);
+	}
+	else if (CurrentCoinFocus && AxisValue == 0)
+	{
+		CurrentCoinFocus->HandleReleased();
 	}
 }
