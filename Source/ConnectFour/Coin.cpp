@@ -6,33 +6,12 @@
 // Sets default values
 ACoin::ACoin()
 {
-	// Structure to hold one-time initialization
-	struct FConstructorStatics
-	{
-		ConstructorHelpers::FObjectFinderOptional<UStaticMesh> CoinMesh;
-		ConstructorHelpers::FObjectFinderOptional<UMaterial> BaseMaterial;
-		ConstructorHelpers::FObjectFinderOptional<UMaterial> GlowMaterial;
-		FConstructorStatics()
-			: CoinMesh(TEXT("/Game/Geometry/Meshes/Coin/Coin"))
-			, BaseMaterial(TEXT("/Game/Geometry/Meshes/Coin/YellowCoinMaterial"))
-			, GlowMaterial(TEXT("/Game/Geometry/Meshes/Coin/YellowGlowMaterial"))
-		{
-		}
-	};
-	static FConstructorStatics ConstructorStatics;
-
 	// Create and setup static mesh component
 	BlockMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BlockMesh0"));
-	BlockMesh->SetStaticMesh(ConstructorStatics.CoinMesh.Get());
-	BlockMesh->SetMaterial(0, ConstructorStatics.BaseMaterial.Get());
 	RootComponent = BlockMesh;
 
 	//Enable physics
 	BlockMesh->SetSimulatePhysics(true);
-
-	//Setup material defaults
-	BaseMaterial = ConstructorStatics.BaseMaterial.Get();
-	GlowMaterial = ConstructorStatics.GlowMaterial.Get();
 }
 
 // Left mouse button down on coin, move coin to mouse cursor

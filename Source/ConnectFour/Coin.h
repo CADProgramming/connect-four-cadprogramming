@@ -28,11 +28,11 @@ public:
 	class UStaticMeshComponent* BlockMesh;
 
 	// Default base material
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Appearance")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Appearance")
 	class UMaterial* BaseMaterial;
 
 	// Default glow material
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Appearance")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Appearance")
 	class UMaterial* GlowMaterial;
 
 	ACoin();
