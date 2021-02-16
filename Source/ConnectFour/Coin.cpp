@@ -14,8 +14,8 @@ ACoin::ACoin()
 		ConstructorHelpers::FObjectFinderOptional<UMaterial> GlowMaterial;
 		FConstructorStatics()
 			: CoinMesh(TEXT("/Game/Geometry/Meshes/Coin/Coin"))
-			, BaseMaterial(TEXT("/Game/Geometry/Meshes/Coin/CoinMaterial"))
-			, GlowMaterial(TEXT("/Game/Geometry/Meshes/Coin/GlowMaterial"))
+			, BaseMaterial(TEXT("/Game/Geometry/Meshes/Coin/YellowCoinMaterial"))
+			, GlowMaterial(TEXT("/Game/Geometry/Meshes/Coin/YellowGlowMaterial"))
 		{
 		}
 	};
