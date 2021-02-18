@@ -41,5 +41,5 @@ private:
 	const float MAXMOVEHEIGHT = 350.0f;
 	const float MOVEHEIGHTDIFF = MAXMOVEHEIGHT - MINMOVEHEIGHT;
 
-	const float GRIDXPOSITION = 940.0f;
+	const float GRIDXPOSITION = 0;
 };
