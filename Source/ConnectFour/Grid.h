@@ -23,7 +23,7 @@ public:
 	class ACoin* CoinAddedToGrid;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	FVector CoinLocation;
+	FVector2D CoinLocation;
 
 	// constructor sets default values for this actor's properties
 	AGrid();
@@ -35,4 +35,10 @@ public:
 	void OnOverlapEnd(class AActor* OverlappedActor, class AActor* OtherActor);
 
 	virtual void Tick(float DeltaSeconds) override;
+
+private:
+	const int ROWHEIGHT = -50;
+	const int COLUMNWIDTH = 60;
+	const int ORIGINX = -180;
+	const int ORIGINY = 295;
 };

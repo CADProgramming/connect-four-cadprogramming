@@ -15,6 +15,7 @@ ACoin::ACoin()
 
 	bIsNewInGrid = true;
 	bIsActive = true;
+	bIsMouseFocus = false;
 }
 
 // Left mouse button down on coin, move coin to mouse cursor
@@ -40,9 +41,11 @@ void ACoin::Highlight(const bool bOn)
 	if (bOn)
 	{
 		BlockMesh->SetMaterial(0, GlowMaterial);
+		bIsMouseFocus = true;
 	}
 	else
 	{
 		BlockMesh->SetMaterial(0, BaseMaterial);
+		bIsMouseFocus = false;
 	}
 }

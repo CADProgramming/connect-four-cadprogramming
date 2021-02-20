@@ -9,6 +9,12 @@
 #include "EngineUtils.h"
 #include "Coin.generated.h"
 
+UENUM()
+enum ECoinType {
+	YELLOW_COIN,
+	RED_COIN
+};
+
 UCLASS()
 class CONNECTFOUR_API ACoin : public AActor
 {
@@ -21,6 +27,9 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Grid")
 	bool bIsActive;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Grid")
+	bool bIsMouseFocus;
+
 	// Distance from this coin to the grid
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Position")
 	float DistanceToGrid;
@@ -28,6 +37,9 @@ public:
 	// X position where the coin was picked up
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Position")
 	float InitialXPosition;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Appearance")
+	TEnumAsByte<ECoinType> TypeOfCoin;
 
 	// Default coin mesh
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Appearance")
