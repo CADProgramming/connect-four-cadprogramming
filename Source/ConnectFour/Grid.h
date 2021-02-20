@@ -31,5 +31,8 @@ public:
 	UFUNCTION()
 	void OnOverlapBegin(class AActor* OverlappedActor, class AActor* OtherActor);
 
+	UFUNCTION()
+	void OnOverlapEnd(class AActor* OverlappedActor, class AActor* OtherActor);
+
 	virtual void Tick(float DeltaSeconds) override;
 };

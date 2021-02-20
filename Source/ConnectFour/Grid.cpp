@@ -11,6 +11,7 @@ AGrid::AGrid()
     PrimaryActorTick.bCanEverTick = true;
     SetActorScale3D(FVector(0.2f, 5.2f, 3.75f));
     OnActorBeginOverlap.AddDynamic(this, &AGrid::OnOverlapBegin);
+    OnActorEndOverlap.AddDynamic(this, &AGrid::OnOverlapEnd);
 }
 
 void AGrid::BeginPlay()
@@ -33,8 +34,19 @@ void AGrid::Tick(float DeltaSeconds)
 void AGrid::OnOverlapBegin(class AActor* OverlappedActor, class AActor* OtherActor)
 {
     // check if Actors do not equal nullptr and that 
-    if (OtherActor && (OtherActor != this) && OtherActor != CoinAddedToGrid)
+    if (OtherActor && (OtherActor != this))
     {
         CoinAddedToGrid = Cast<ACoin>(OtherActor);
+        CoinAddedToGrid->bIsActive = false;
+    }
+}
+
+void AGrid::OnOverlapEnd(class AActor* OverlappedActor, class AActor* OtherActor)
+{
+    // check if Actors do not equal nullptr and that 
+    if (OtherActor && (OtherActor != this)) 
+    {
+        CoinAddedToGrid->bIsActive = true;
+        CoinAddedToGrid = nullptr;
     }
 }

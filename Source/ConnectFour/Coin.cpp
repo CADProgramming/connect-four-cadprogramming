@@ -12,6 +12,9 @@ ACoin::ACoin()
 
 	//Enable physics
 	BlockMesh->SetSimulatePhysics(true);
+
+	bIsNewInGrid = true;
+	bIsActive = true;
 }
 
 // Left mouse button down on coin, move coin to mouse cursor

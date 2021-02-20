@@ -100,22 +100,29 @@ void AConnectFourPawn::TraceForBlock(const FVector& Start, const FVector& End, b
 		if (HitResult.Actor.IsValid())
 		{
 			// Cast to coin
-			ACoin* HitBlock = Cast<ACoin>(HitResult.Actor.Get());
+			ACoin* HitCoin = Cast<ACoin>(HitResult.Actor.Get());
 
-			// If coin is not the same as previous
-			if (CurrentCoinFocus != HitBlock)
+			// If Coin is marked as active
+			if (HitCoin && HitCoin->bIsActive)
 			{
-				// Unhighlight previous coin
-				if (CurrentCoinFocus)
+				// If coin is not the same as previous
+				if (CurrentCoinFocus != HitCoin)
 				{
-					CurrentCoinFocus->Highlight(false);
+					// Unhighlight previous coin
+					if (CurrentCoinFocus)
+					{
+						CurrentCoinFocus->Highlight(false);
+					}
+
+					// Highlight current coin
+					HitCoin->Highlight(true);
+					CurrentCoinFocus = HitCoin;
 				}
-				// Highlight current coin
-				if (HitBlock)
-				{
-					HitBlock->Highlight(true);
-				}
-				CurrentCoinFocus = HitBlock;
+			}
+			else if (CurrentCoinFocus) // Can't select coin because not active
+			{
+				CurrentCoinFocus->Highlight(false);
+				CurrentCoinFocus = nullptr;
 			}
 		}
 		else if (CurrentCoinFocus)

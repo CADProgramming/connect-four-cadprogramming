@@ -15,6 +15,12 @@ class CONNECTFOUR_API ACoin : public AActor
 	GENERATED_BODY()
 	
 public:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Grid")
+	bool bIsNewInGrid;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Grid")
+	bool bIsActive;
+
 	// Distance from this coin to the grid
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Position")
 	float DistanceToGrid;
