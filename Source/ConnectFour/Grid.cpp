@@ -107,111 +107,135 @@ void AGrid::SetupGrid()
 
 void AGrid::CheckConnectFour(FVector2D NewCoinLocation, ECoinType CoinColour)
 {
-    bool bLeftUp = NewCoinLocation.X >= 3 && NewCoinLocation.Y >= 3;
-    bool bLeftDown = NewCoinLocation.X >= 3 && NewCoinLocation.Y <= 2;
-    bool bLeft = NewCoinLocation.X >= 3;
+    int LeftHorizontalCount = 0;
+    int RightHorizontalCount = 0;
+    int HorizontalCount = 0;
+    int VerticalCount = 0;
 
-    bool bRightUp = NewCoinLocation.X <= 3 && NewCoinLocation.Y >= 3;
-    bool bRightDown = NewCoinLocation.X <= 3 && NewCoinLocation.Y <= 2;
-    bool bRight = NewCoinLocation.X <= 3;
-
-    bool bDown = NewCoinLocation.Y <= 2;
-
-    // Check Left
-    if (NewCoinLocation.X >= 3)
+    // Left Horizontal Count
+    for (int c = 0; c < 4; c++)
     {
-        // Check Left And Up
-        if (NewCoinLocation.Y >= 3)
+        if (NewCoinLocation.X - c >= 0 && NewCoinLocation.Y - c >= 0)
         {
-            for (int c = 0; c < 4; c++)
+            if (Grid[NewCoinLocation.X - c][NewCoinLocation.Y - c] == CoinColour)
             {
-                if (Grid[NewCoinLocation.X - c][NewCoinLocation.Y - c] != CoinColour)
-                {
-                    bLeftUp = false;
-                    break;
-                }
+                LeftHorizontalCount++;
+            }
+            else
+            {
+                break;
             }
         }
-
-        // Check Left And Down
-        if (NewCoinLocation.Y <= 2)
+    }
+    for (int c = 1; c < 4; c++)
+    {
+        if (NewCoinLocation.X + c < GRIDWIDTH && NewCoinLocation.Y + c < GRIDHEIGHT)
         {
-            for (int c = 0; c < 4; c++)
+            if (Grid[NewCoinLocation.X + c][NewCoinLocation.Y + c] == CoinColour)
             {
-                if (Grid[NewCoinLocation.X - c][NewCoinLocation.Y + c] != CoinColour)
-                {
-                    bLeftDown = false;
-                    break;
-                }
+                LeftHorizontalCount++;
             }
-        }
-
-        // Check Left
-        for (int c = 0; c < 4; c++)
-        {
-            if (Grid[NewCoinLocation.X - c][NewCoinLocation.Y] != CoinColour)
+            else
             {
-                bLeft = false;
                 break;
             }
         }
     }
 
-    // Check Right
-    if (NewCoinLocation.X <= 3)
+    // Right Horizontal Count
+    for (int c = 0; c < 4; c++)
     {
-        // Check Right And Up
-        if (NewCoinLocation.Y >= 3)
+        if (NewCoinLocation.X + c < GRIDWIDTH && NewCoinLocation.Y - c >= 0)
         {
-            for (int c = 0; c < 4; c++)
+            if (Grid[NewCoinLocation.X + c][NewCoinLocation.Y - c] == CoinColour)
             {
-                if (Grid[NewCoinLocation.X + c][NewCoinLocation.Y - c] != CoinColour)
-                {
-                    bRightUp = false;
-                    break;
-                }
+                RightHorizontalCount++;
+            }
+            else
+            {
+                break;
             }
         }
-
-        // Check Right And Down
-        if (NewCoinLocation.Y <= 2)
+    }
+    for (int c = 1; c < 4; c++)
+    {
+        if (NewCoinLocation.X - c >= 0 && NewCoinLocation.Y + c < GRIDHEIGHT)
         {
-            for (int c = 0; c < 4; c++)
+            if (Grid[NewCoinLocation.X - c][NewCoinLocation.Y + c] == CoinColour)
             {
-                if (Grid[NewCoinLocation.X + c][NewCoinLocation.Y + c] != CoinColour)
-                {
-                    bRightDown = false;
-                    break;
-                }
+                RightHorizontalCount++;
             }
-        }
-
-        // Check Right
-        for (int c = 0; c < 4; c++)
-        {
-            if (Grid[NewCoinLocation.X + c][NewCoinLocation.Y] != CoinColour)
+            else
             {
-                bRight = false;
                 break;
             }
         }
     }
 
-    // Check Down
-    if (NewCoinLocation.Y <= 2)
+    // Horizontal Count
+    for (int c = 0; c < 4; c++)
     {
-        for (int c = 0; c < 4; c++)
+        if (NewCoinLocation.X + c < GRIDWIDTH)
         {
-            if (Grid[NewCoinLocation.X][NewCoinLocation.Y + c] != CoinColour)
+            if (Grid[NewCoinLocation.X + c][NewCoinLocation.Y] == CoinColour)
             {
-                bDown = false;
+                HorizontalCount++;
+            }
+            else
+            {
+                break;
+            }
+        }
+    }
+    for (int c = 1; c < 4; c++)
+    {
+        if (NewCoinLocation.X - c >= 0)
+        {
+            if (Grid[NewCoinLocation.X - c][NewCoinLocation.Y] == CoinColour)
+            {
+                HorizontalCount++;
+            }
+            else
+            {
                 break;
             }
         }
     }
 
-    // If win condition is met, game won
-    if (bLeftUp || bLeftDown || bLeft || bRightUp || bRightDown || bRight || bDown)
+    // Vertical Count
+    for (int c = 0; c < 4; c++)
+    {
+        if (NewCoinLocation.Y + c < GRIDHEIGHT)
+        {
+            if (Grid[NewCoinLocation.X][NewCoinLocation.Y + c] == CoinColour)
+            {
+                VerticalCount++;
+            }
+            else
+            {
+                break;
+            }
+        }
+    }
+    for (int c = 1; c < 4; c++)
+    {
+        if (NewCoinLocation.Y - c >= 0)
+        {
+            if (Grid[NewCoinLocation.X][NewCoinLocation.Y - c] == CoinColour)
+            {
+                VerticalCount++;
+            }
+            else
+            {
+                break;
+            }
+        }
+    }
+
+    if (LeftHorizontalCount >= 4 ||
+        RightHorizontalCount >= 4 ||
+        HorizontalCount >= 4 ||
+        VerticalCount >= 4)
     {
         if (GEngine)
         {
