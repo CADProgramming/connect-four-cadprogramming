@@ -48,4 +48,7 @@ private:
 
 	const int GRIDWIDTH = 7;
 	const int GRIDHEIGHT = 6;
+
+	void SetupGrid();
+	void CheckConnectFour(FVector2D NewCoinLocation, ECoinType CoinColour);
 };
