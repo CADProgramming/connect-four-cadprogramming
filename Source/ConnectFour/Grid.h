@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "Engine/TriggerBox.h"
+#include "Coin.h"
+#include "DrawDebugHelpers.h"
 #include "Grid.generated.h"
 
 /**
@@ -25,6 +27,8 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	FVector2D CoinLocation;
 
+	TArray<TArray<ECoinType>> Grid;
+
 	// constructor sets default values for this actor's properties
 	AGrid();
 
@@ -41,4 +45,7 @@ private:
 	const int COLUMNWIDTH = 60;
 	const int ORIGINX = -180;
 	const int ORIGINY = 295;
+
+	const int GRIDWIDTH = 7;
+	const int GRIDHEIGHT = 6;
 };

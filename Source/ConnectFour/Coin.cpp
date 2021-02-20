@@ -3,6 +3,7 @@
 
 #include "Coin.h"
 
+
 // Sets default values
 ACoin::ACoin()
 {

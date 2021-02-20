@@ -2,16 +2,25 @@
 
 
 #include "Grid.h"
-#include "Coin.h"
-#include "DrawDebugHelpers.h"
 
 
 AGrid::AGrid()
 {
     PrimaryActorTick.bCanEverTick = true;
     SetActorScale3D(FVector(0.2f, 5.2f, 3.74f));
+    
     OnActorBeginOverlap.AddDynamic(this, &AGrid::OnOverlapBegin);
     OnActorEndOverlap.AddDynamic(this, &AGrid::OnOverlapEnd);
+
+    TArray<ECoinType> GridRow = TArray<ECoinType>();
+    for (int y = 0; y < GRIDHEIGHT; y++)
+    {
+        GridRow.Add(ECoinType::NONE);
+    }
+    for (int x = 0; x < GRIDWIDTH; x++)
+    {
+        Grid.Add(GridRow);
+    }
 }
 
 void AGrid::BeginPlay()
@@ -37,6 +46,7 @@ void AGrid::Tick(float DeltaSeconds)
             float GridYPosition = FMath::RoundToInt((CoinCoordinates.Z - ORIGINY) / ROWHEIGHT);
 
             CoinLocation = FVector2D(GridXPosition, GridYPosition);
+            Grid[(int32)CoinLocation.X][(int32)CoinLocation.Y] = CoinAddedToGrid->TypeOfCoin;
             CoinAddedToGrid->bIsNewInGrid = false;
             CoinAddedToGrid = nullptr;
         }

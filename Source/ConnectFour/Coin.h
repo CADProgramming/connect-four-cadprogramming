@@ -7,13 +7,8 @@
 #include "Engine/StaticMeshActor.h"
 #include "Kismet/GameplayStatics.h"
 #include "EngineUtils.h"
+#include "CoinType.h"
 #include "Coin.generated.h"
-
-UENUM()
-enum ECoinType {
-	YELLOW_COIN,
-	RED_COIN
-};
 
 UCLASS()
 class CONNECTFOUR_API ACoin : public AActor

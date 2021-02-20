@@ -1,12 +1,8 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
+
 #include "ConnectFourPawn.h"
-#include "Coin.h"
-#include "HeadMountedDisplayFunctionLibrary.h"
-#include "Camera/CameraComponent.h"
-#include "GameFramework/PlayerController.h"
-#include "Engine/World.h"
-#include "DrawDebugHelpers.h"
+
 
 AConnectFourPawn::AConnectFourPawn(const FObjectInitializer& ObjectInitializer) 
 	: Super(ObjectInitializer)
