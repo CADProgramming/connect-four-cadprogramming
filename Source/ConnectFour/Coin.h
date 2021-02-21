@@ -34,7 +34,7 @@ public:
 	float InitialXPosition;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Appearance")
-	TEnumAsByte<ECoinType> TypeOfCoin;
+	ECoinType TypeOfCoin;
 
 	// Default coin mesh
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Appearance")

@@ -6,8 +6,5 @@
 
 AConnectFourGameMode::AConnectFourGameMode()
 {
-	// no pawn by default
-	DefaultPawnClass = AConnectFourPawn::StaticClass();
-	// use our own player controller class
 	PlayerControllerClass = AConnectFourPlayerController::StaticClass();
 }

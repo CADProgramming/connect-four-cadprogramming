@@ -7,8 +7,6 @@
 AConnectFourPawn::AConnectFourPawn(const FObjectInitializer& ObjectInitializer) 
 	: Super(ObjectInitializer)
 {
-	// Player controller should use this pawn
-	AutoPossessPlayer = EAutoReceiveInput::Player0;
 }
 
 // Tick event for Pawn

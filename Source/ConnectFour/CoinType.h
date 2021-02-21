@@ -3,7 +3,7 @@
 #include "CoreMinimal.h"
 
 UENUM()
-enum class ECoinType : int32
+enum class ECoinType : uint8
 {
 	NONE,
 	YELLOW_COIN,

@@ -18,6 +18,9 @@ class AConnectFourPawn : public APawn
 	GENERATED_UCLASS_BODY()
 
 public:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	ECoinType MyColour;
+
 	// Current coin that is clicked on
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	class ACoin* CurrentCoinFocus;

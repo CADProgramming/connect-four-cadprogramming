@@ -7,7 +7,7 @@
 AGrid::AGrid()
 {
     PrimaryActorTick.bCanEverTick = true;
-    SetActorScale3D(FVector(0.2f, 5.2f, 3.73f));
+    SetActorScale3D(FVector(0.2f, 5.2f, 3.45f));
     
     OnActorBeginOverlap.AddDynamic(this, &AGrid::OnOverlapBegin);
     OnActorEndOverlap.AddDynamic(this, &AGrid::OnOverlapEnd);
