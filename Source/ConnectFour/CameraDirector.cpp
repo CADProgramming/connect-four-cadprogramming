@@ -31,9 +31,20 @@ void ACameraDirector::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+    if (CameraMoveTime >= 0)
+    {
+        CameraMoveTime -= DeltaTime;
+    }
+    else
+    {
+        FOutputDevice* ar = nullptr;
+        SkySphere->CallFunctionByNameWithArguments(TEXT("SlowCloudSpeed"), *ar, NULL, true);
+    }
+
     if (PlayerController && TransitionTime >= 0)
     {
         TransitionTime -= DeltaTime;
+        MoveSun();
     }
     else if (TransitionTime <= 0)
     {
@@ -72,8 +83,19 @@ void ACameraDirector::ChangeCamera(AActor* NewCamera)
             // Blend smoothly to camera two.
             PlayerController->SetViewTargetWithBlend(NewCamera, BLENDTIME);
             TransitionTime += BLENDTIME;
+            CameraMoveTime += BLENDTIME * 2;
+
+            FOutputDevice* ar = nullptr;
+            SkySphere->CallFunctionByNameWithArguments(TEXT("FastCloudSpeed"), *ar, NULL, true);
         }
     }
+}
+
+void ACameraDirector::MoveSun()
+{
+    Sun->AddActorLocalRotation(FQuat(0, 0.0043633f, 0, 0.9999905f), false, nullptr, ETeleportType::None);
+    FOutputDevice* ar = nullptr;
+    SkySphere->CallFunctionByNameWithArguments(TEXT("UpdateSunDirection"), *ar, NULL, true);
 }
 
 void ACameraDirector::TransitionToPlayer1()

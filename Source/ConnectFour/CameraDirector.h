@@ -40,6 +40,9 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	float TransitionTime;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	float CameraMoveTime;
+
 	// Sets default values for this actor's properties
 	ACameraDirector();
 
@@ -64,5 +67,6 @@ private:
 
 	void SetCameraStart(AActor* NewCamera);
 	void ChangeCamera(AActor* NewCamera);
+	void MoveSun();
 
 };
