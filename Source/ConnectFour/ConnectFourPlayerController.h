@@ -41,6 +41,8 @@ private:
 
 	// Transitions from player 1 to player 2's turn
 	void TransitionToPlayer2();
+
+	void CameraGameStart();
 };
 
 

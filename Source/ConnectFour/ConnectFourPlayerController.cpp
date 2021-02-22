@@ -24,6 +24,7 @@ void AConnectFourPlayerController::BeginPlay()
 	Player2->MyColour = ECoinType::YELLOW_COIN;
 
 	Possess(Player1);
+	CameraGameStart();
 }
 
 void AConnectFourPlayerController::ChangeTurn()
@@ -56,5 +57,13 @@ void AConnectFourPlayerController::TransitionToPlayer2()
 	if (VisualsManager)
 	{
 		VisualsManager->TransitionToPlayer2();
+	}
+}
+
+void AConnectFourPlayerController::CameraGameStart()
+{
+	if (VisualsManager)
+	{
+		VisualsManager->CameraGameStart();
 	}
 }

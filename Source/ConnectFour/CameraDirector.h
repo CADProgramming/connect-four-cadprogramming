@@ -31,6 +31,15 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Cameras")
 	class AActor* P2ToP1Cam;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class AGridStopper* Switch;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	class AConnectFourPlayerController* PlayerController;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	float TransitionTime;
+
 	// Sets default values for this actor's properties
 	ACameraDirector();
 
@@ -39,6 +48,8 @@ public:
 
 	// Transitions from player 1 to player 2's turn
 	void TransitionToPlayer2();
+
+	void CameraGameStart();
 
 protected:
 	// Called when the game starts or when spawned
@@ -49,8 +60,9 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 private:
-	const float BLENDTIME = 1.0f;
+	const float BLENDTIME = 1.2f;
 
+	void SetCameraStart(AActor* NewCamera);
 	void ChangeCamera(AActor* NewCamera);
 
 };
