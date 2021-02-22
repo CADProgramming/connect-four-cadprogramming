@@ -5,7 +5,6 @@
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
 #include "Engine/DirectionalLight.h"
-#include "ConnectFourPawn.h"
 #include "ConnectFourPlayerController.generated.h"
 
 /** PlayerController class used to enable cursor */
@@ -17,23 +16,8 @@ class AConnectFourPlayerController : public APlayerController
 public:
 	AConnectFourPlayerController();
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Lighting")
-	TSubclassOf<AActor> SkySphere;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Lighting")
-	class ADirectionalLight* Sun;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Cameras")
-	class AActor* Player1Cam;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Cameras")
-	class AActor* P1ToP2Cam;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Cameras")
-	class AActor* Player2Cam;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Cameras")
-	class AActor* P2ToP1Cam;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Setup")
+	class ACameraDirector* VisualsManager;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player")
 	bool bPlayer1Turn;

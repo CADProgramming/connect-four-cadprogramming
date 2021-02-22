@@ -2,7 +2,8 @@
 
 
 #include "ConnectFourPlayerController.h"
-
+#include "ConnectFourPawn.h"
+#include "CameraDirector.h"
 
 AConnectFourPlayerController::AConnectFourPlayerController()
 {
@@ -44,10 +45,16 @@ void AConnectFourPlayerController::ChangeTurn()
 
 void AConnectFourPlayerController::TransitionToPlayer1()
 {
-
+	if (VisualsManager)
+	{
+		VisualsManager->TransitionToPlayer1();
+	}
 }
 
 void AConnectFourPlayerController::TransitionToPlayer2()
 {
-
+	if (VisualsManager)
+	{
+		VisualsManager->TransitionToPlayer2();
+	}
 }

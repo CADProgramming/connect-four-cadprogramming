@@ -6,5 +6,6 @@
 
 AConnectFourGameMode::AConnectFourGameMode()
 {
+	DefaultPawnClass = nullptr;
 	PlayerControllerClass = AConnectFourPlayerController::StaticClass();
 }

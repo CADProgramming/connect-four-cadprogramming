@@ -2,7 +2,7 @@
 
 
 #include "Grid.h"
-
+#include "ConnectFourPlayerController.h"
 
 AGrid::AGrid()
 {
@@ -45,7 +45,17 @@ void AGrid::Tick(float DeltaSeconds)
             CoinAddedToGrid->bIsNewInGrid = false;
             CoinAddedToGrid = nullptr;
 
-            CheckConnectFour(CoinLocation, NewCoinType);
+            bool bGameIsWon = CheckConnectFour(CoinLocation, NewCoinType);
+
+            if (!bGameIsWon)
+            {
+                APlayerController* RawPlayerController = UGameplayStatics::GetPlayerController(this, 0);
+                if (RawPlayerController)
+                {
+                    AConnectFourPlayerController* PlayerController = Cast<AConnectFourPlayerController>(RawPlayerController);
+                    PlayerController->ChangeTurn();
+                }
+            }
         }
     }
 }
@@ -105,12 +115,13 @@ void AGrid::SetupGrid()
     }
 }
 
-void AGrid::CheckConnectFour(FVector2D NewCoinLocation, ECoinType CoinColour)
+bool AGrid::CheckConnectFour(FVector2D NewCoinLocation, ECoinType CoinColour)
 {
     int LeftHorizontalCount = 0;
     int RightHorizontalCount = 0;
     int HorizontalCount = 0;
     int VerticalCount = 0;
+    bool bGameIsWon = false;
 
     // Left Horizontal Count
     for (int c = 0; c < 4; c++)
@@ -241,5 +252,10 @@ void AGrid::CheckConnectFour(FVector2D NewCoinLocation, ECoinType CoinColour)
         {
             GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Red, TEXT("Connect Four!"), true, FVector2D(3.0f, 3.0f));
         }
+
+        bGameIsWon = true;
+        return bGameIsWon;
     }
+
+    return bGameIsWon;
 }
