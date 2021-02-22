@@ -67,6 +67,6 @@ private:
 
 	void SetCameraStart(AActor* NewCamera);
 	void ChangeCamera(AActor* NewCamera);
-	void MoveSun();
+	void MoveSun(float DeltaTime);
 
 };

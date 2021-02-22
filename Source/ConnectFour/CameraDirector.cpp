@@ -34,6 +34,7 @@ void ACameraDirector::Tick(float DeltaTime)
     if (CameraMoveTime >= 0)
     {
         CameraMoveTime -= DeltaTime;
+        MoveSun(DeltaTime);
     }
     else
     {
@@ -44,7 +45,6 @@ void ACameraDirector::Tick(float DeltaTime)
     if (PlayerController && TransitionTime >= 0)
     {
         TransitionTime -= DeltaTime;
-        MoveSun();
     }
     else if (TransitionTime <= 0)
     {
@@ -91,9 +91,12 @@ void ACameraDirector::ChangeCamera(AActor* NewCamera)
     }
 }
 
-void ACameraDirector::MoveSun()
+void ACameraDirector::MoveSun(float DeltaTime)
 {
-    Sun->AddActorLocalRotation(FQuat(0, 0.0043633f, 0, 0.9999905f), false, nullptr, ETeleportType::None);
+    for (int d = 0; d < DeltaTime; d++)
+    {
+        Sun->AddActorLocalRotation(FQuat(0, 0.0043633f, 0, 0.9999905f), false, nullptr, ETeleportType::None);
+    }
     FOutputDevice* ar = nullptr;
     SkySphere->CallFunctionByNameWithArguments(TEXT("UpdateSunDirection"), *ar, NULL, true);
 }
